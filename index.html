@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo Caller Online</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="bingoboard"></div>
+<div class="buttons">
+    <a href="#" id="startGame">Start Game</a>
+    <a href="#" id="pauseGame">Pause Game</a>
+    <a href="#" id="resumeGame">Resume Game</a>
+    <a href="#" id="resetBoard">Reset Board</a>
+</div>
+<div id="msg"><div id="voices"></div></div>
+<div id="currentBall"></div>
+
+<script src="js/bingo.js"></script>
+<script>
+    generateBoard(bingoBoard);
+</script>
+
+</body>
+</html>

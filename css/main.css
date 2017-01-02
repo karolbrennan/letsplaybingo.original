@@ -1,0 +1,134 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    background: #ebebeb;
+    font-size: 1.5rem;
+}
+* {
+    box-sizing: border-box;
+}
+#currentBall:empty {
+    display: none;
+}
+#currentBall {
+    display: block;
+    margin: 2rem auto;
+    box-sizing: content-box;
+    width: 5rem;
+    height: 5rem;
+    line-height: 5rem;
+    border-radius: 100%;
+    text-align: center;
+    color: blue;
+    font-weight: bold;
+    font-size: 2.25rem;
+}
+#currentBall.blue {
+    border: 0.25rem solid blue;
+    box-shadow: 0 0 0 0.5rem white, 0 0 0 2rem blue;
+}
+#currentBall.red {
+    border: 0.25rem solid red;
+    box-shadow: 0 0 0 0.5rem white, 0 0 0 2rem red;
+}
+#currentBall.white {
+    border: 0.25rem solid red;
+    box-shadow: 0 0 0 0.5rem white, 0 0 0 2rem white;
+}
+#currentBall.green {
+    border: 0.25rem solid green;
+    box-shadow: 0 0 0 0.5rem white, 0 0 0 2rem green;
+}
+#currentBall.orange {
+    border: 0.25rem solid orange;
+    box-shadow: 0 0 0 0.5rem white, 0 0 0 2rem orange;
+}
+
+#bingoboard {
+    width: 100%;
+    max-width: 100%;
+    display: table;
+    background: #222222;
+    border: 0.5rem solid #111;
+}
+.letter-block {
+    display: table-row;
+}
+.letter-block > div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0.5rem;
+}
+.letter-block * {
+    line-height: 1;
+}
+.letter-block .letter {
+    color: red;
+    background: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+}
+.ball {
+    color: #4a4a4a;
+    transition: all ease 1s;
+    -webkit-transition: all ease 1s;
+}
+
+.called {
+    font-weight: bold;
+    color: white;
+    border-radius: 1rem;
+}
+.current {
+    font-weight: bold;
+    animation: blink 2.5s infinite;
+    -webkit-animation: blink 2.5s infinite;
+}
+#msg {
+    color: #444;
+    font-size: 1rem;
+}
+.buttons, #msg {
+    display: inline-block;
+    vertical-align: middle;
+}
+.buttons a {
+    display: inline-block;
+    text-decoration: none;
+    background: #222222;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+}
+.buttons a:hover {
+    background: #444;
+}
+
+#pauseGame, #resumeGame, #resetBoard {
+    display: none;
+}
+
+.voice {
+    text-decoration: none;
+    font-size: 0.8rem;
+    background: #d46363;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    margin: 0.25rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+}
+.voice:hover {
+    background: #b85c5c;
+}
+.voice.active {
+    background: #444;
+}
+
+@keyframes blink {
+    0% { color: white; }
+    50% { color: #444; }
+    100% { color: white; }
+}
