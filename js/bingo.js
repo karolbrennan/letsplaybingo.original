@@ -2,6 +2,10 @@ var bingoBoard = document.getElementById("bingoboard"),
     bingoLetters = ["B", "I", "N", "G", "O"],
     allBingoNumbers = [],
     calledBingoNumbers = [],
+    availableVoices = [
+        "Daniel", "Fiona", "Karen", "Moira", "Samantha", "Tessa",
+        "Google US English", "Google UK English Male", "Google UK English Female"
+    ],
     selectedVoice = 'Daniel',
     callBallInterval;
 
@@ -10,10 +14,13 @@ document.getElementById('pauseGame').addEventListener('click', pauseGame);
 document.getElementById('resumeGame').addEventListener('click', resumeGame);
 document.getElementById('resetBoard').addEventListener('click', resetBoard);
 
-
+// set initial voice to a random one
+selectedVoice = availableVoices[Math.floor(Math.random() * availableVoices.length)];
+initSpeak();
 
 // generate the bingo board to show on screen
 function generateBoard(bingoBoard) {
+    speak("");
     // loop through the bingo letters
     var currentBall = 1;
     for (var i = 0; i < bingoLetters.length; i++) {
@@ -58,8 +65,8 @@ function clearCurrentBall(){
 
 // start a new game
 function startGame(){
-    console.log("Start game!");
     speak("Let's play bingo!");
+    console.log("Start game!");
     calledBingoNumbers = [];
     callNumber(calledBingoNumbers);
     callBallInterval = setInterval(callNumber, 10000, calledBingoNumbers);
@@ -104,6 +111,14 @@ function callNumber(calledBingoNumbers) {
     } else {
         clearCurrentBall();
     }
+    var existingBall = document.getElementById('currentBall');
+    if(existingBall){
+        existingBall.setAttribute('id', 'lastBall');
+        var lastCall = document.getElementById('lastCall');
+        lastCall.innerHTML = '';
+        lastCall.appendChild(existingBall);
+    }
+
     var newBall = allBingoNumbers[Math.floor(Math.random() * allBingoNumbers.length)];
     // call the number aloud
     speak(newBall);
@@ -131,10 +146,18 @@ function callNumber(calledBingoNumbers) {
             break;
     }
 
-    var currentBall = document.getElementById('currentBall');
-    currentBall.className = color;
-    currentBall.innerHTML = newBall;
-
+    var newBallElement = document.createElement('div');
+    newBallElement.setAttribute('id','currentBall');
+    newBallElement.className = color;
+    var newBallText = document.createElement('div');
+    newBallText.className = 'ballText';
+    var splitBall = newBall.split('');
+    newBallText.innerHTML = splitBall[0] + "<br>" + splitBall[1];
+    if(splitBall[2] !== undefined){
+        newBallText.innerHTML += splitBall[2];
+    }
+    document.getElementById('newCall').appendChild(newBallElement);
+    newBallElement.appendChild(newBallText);
 
     // pull this ball from the array of numbers
     var index = allBingoNumbers.indexOf(newBall);
@@ -155,28 +178,23 @@ function createDiv(divClass, content) {
     return element;
 }
 
+function initSpeak(){
+    // SPEECH SYNTHESIS FOR CALLING OUT BALLS
 
-// create a new div element
-function createVoiceLink(name) {
-    var element = document.createElement('a');
-    element.href = '#';
-    element.className = 'voice';
-    element.setAttribute('data-voice', name);
-    element.innerHTML = name;
-    return element;
+    /*
+     * Check for browser support
+     */
+    var supportMsg = document.getElementById('msg');
+
+    if ('speechSynthesis' in window) {
+        addVoiceEventListeners();
+    } else {
+        supportMsg.innerHTML = 'Sorry! Your browser <strong>does not support</strong> the reading of bingo balls out loud!<br>Try this in <a href="https://www.google.com/chrome/browser/canary.html">Chrome Canary</a>.';
+        supportMsg.classList.add('not-supported');
+    }
 }
 
-function addVoiceSelectors(){
-    var availableVoices = [
-        "Daniel", "Fiona", "Karen", "Moira", "Samantha", "Tessa",
-        "Google US English", "Google UK English Male", "Google UK English Female"
-    ];
-
-    var voicesDiv = document.getElementById("voices");
-    for (var i = 0; i < availableVoices.length; i++) {
-        voicesDiv.appendChild(createVoiceLink(availableVoices[i]));
-    }
-
+function addVoiceEventListeners(){
     var voiceButtons = document.getElementsByClassName('voice');
     for (var a = 0; a < voiceButtons.length; a++) {
         voiceButtons[a].addEventListener('click', function (){
@@ -193,37 +211,13 @@ function addVoiceSelectors(){
     }
 }
 
-// SPEECH SYNTHESIS FOR CALLING OUT BALLS
-
-/*
- * Check for browser support
- */
-var supportMsg = document.getElementById('msg');
-
-if ('speechSynthesis' in window) {
-    addVoiceSelectors();
-} else {
-    supportMsg.innerHTML = 'Sorry! Your browser <strong>does not support</strong> the reading of bingo balls out loud!<br>Try this in <a href="https://www.google.com/chrome/browser/canary.html">Chrome Canary</a>.';
-    supportMsg.classList.add('not-supported');
-}
-
-// Execute loadVoices.
-// loadVoices();
-// Chrome loads voices asynchronously.
-window.speechSynthesis.onvoiceschanged = function(e) {
-    // loadVoices();
-};
-
-
-// Create a new utterance for the specified text and add it to
-// the queue.
 function speak(text) {
     // Create a new instance of SpeechSynthesisUtterance.
     var msg = new SpeechSynthesisUtterance();
     // Set the text.
     msg.text = text;
 
-    if (selectedVoice) {
+    if (selectedVoice !== undefined) {
         msg.voice = speechSynthesis.getVoices().filter(function(voice) {
             return voice.name == selectedVoice;
         })[0];
