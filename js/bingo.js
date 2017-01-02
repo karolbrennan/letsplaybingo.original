@@ -96,7 +96,8 @@ function resumeGame(){
 function resetBoard(){
     console.log("Reset game!");
     bingoBoard.innerHTML = '';
-    document.getElementById('currentBall').innerHTML = '';
+    document.getElementById('lastCall').innerHTML = '';
+    document.getElementById('newCall').innerHTML = '';
     generateBoard(bingoBoard);
 
     document.getElementById("pauseGame").style.display = "none";
