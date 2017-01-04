@@ -1,181 +1,133 @@
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    color: #ffffff;
-    background: #ebebeb;
-    font-size: 1.5rem;
-}
-* {
-    box-sizing: border-box;
+/* Typography */
+body { color: #444; }
+html, body, p, .btn { font-size: 1rem; }
+h1 { font-size: 2.5rem; margin: 0 0 0.5em; font-weight: bold; text-transform: uppercase; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1rem; margin: 0; padding: 0.5em; text-align: center; background: #3d3d3d; color: #fff; }
+h4 { font-size: 1rem; margin: 0.75em 1em; float: left; }
+#voices .btn { font-size: 0.7rem; }
+
+/* Spacing */
+body { padding: 2rem; }
+.btn { margin: 0.25em; }
+
+/* Buttons */
+#buttons { margin-top: 1rem; }
+#buttons a {
+    width: 48%;
+    margin: 1%;
+    font-weight: bold;
 }
 
-div#balls {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    position: relative;
-}
-#balls > div {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 1rem;
-    background: #222;
-    padding: 1rem;
-    height: 20rem;
-    width: 20rem;
-    text-align: center;
-}
-#currentBall, #lastBall {
-    position: relative;
-    margin: auto auto;
-    box-sizing: content-box;
-    width: 10rem;
-    height: 10rem;
-    line-height: 10rem;
-    border-radius: 100%;
-    text-align: center;
-    color: blue;
-    font-weight: bold;
-    font-size: 2rem;
-    box-shadow: inset -0.5rem -0.5rem 2rem 0 rgba(0, 0, 0, 0.28);
-}
-.ballText:empty{
-    display: none;
-}
-.ballText {
-    display: block;
-    position: absolute;
-    top: 2rem;
-    left: 2rem;
-    background: radial-gradient(circle at 20% 20%, white, #efefef);
-    line-height: 1;
-    width: 5.25rem;
-    height: 5.25rem;
-    padding-top: 0.25rem;
-    border-radius: 100%;
-    box-shadow: inset -0.5rem -0.5rem 2rem 0 rgba(0, 0, 0, 0.16), 0 0 0 0.25rem white;
-    border: 0.25rem solid #4e4e4e;
-}
-#currentBall.blue, #lastCall .blue {
-    background: radial-gradient(circle at 20% 20%, blue, #000062);
-}
-#currentBall.blue .ballText, #lastCall .blue .ballText {
-    border: 0.25rem solid blue;
-}
-#currentBall.red, #lastCall .red {
-    background: radial-gradient(circle at 20% 20%, red, #9e0000);
-}
-#currentBall.red .ballText, #lastCall .red .ballText {
-    border: 0.25rem solid red;
-}
-#currentBall.white, #lastCall .white {
-    background: radial-gradient(circle at 20% 20%, white, #b6b6b6);
-}
-#currentBall.white .ballText, #lastCall .white .ballText {
-    border: 0.25rem solid red;
-}
-#currentBall.green, #lastCall .green {
-    background: radial-gradient(circle at 20% 20%, green, #004800);
-}
-#currentBall.green .ballText, #lastCall .green .ballText {
-    border: 0.25rem solid green;
-}
-#currentBall.orange, #lastCall .orange {
-    background: radial-gradient(circle at 20% 20%, orange, #af7900);
-}
-#currentBall.orange .ballText, #lastCall .orange .ballText {
-    border: 0.25rem solid orange;
-}
+/* Sizing */
+#bingoboard { width: 100%; }
+.letter, .ball { width: 6.25%; }
 
-#bingoboard {
-    width: 100%;
-    max-width: 100%;
-    display: table;
-    background: #222222;
-    border: 0.5rem solid #111;
-}
-.letter-block {
-    display: table-row;
-}
-.letter-block > div {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    padding: 0.5rem;
-}
-.letter-block * {
-    line-height: 1;
-}
-.letter-block .letter {
-    color: red;
-    background: white;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-}
+/* Bingo Board */
 .ball {
-    color: #4a4a4a;
     transition: all ease 1s;
     -webkit-transition: all ease 1s;
 }
-
-.called {
+.called, .current {
     font-weight: bold;
-    color: white;
-    border-radius: 1rem;
+    color: #fff;
 }
 .current {
-    font-weight: bold;
     animation: blink 2.5s infinite;
     -webkit-animation: blink 2.5s infinite;
 }
-#msg {
-    color: #444;
-    font-size: 1rem;
-}
-.buttons, #msg {
-    display: inline-block;
-    vertical-align: middle;
-}
-.buttons a {
-    display: inline-block;
-    text-decoration: none;
-    background: #222222;
-    padding: 0.5rem 1rem;
-    color: #fff;
-    border-radius: 0.25rem;
-    font-size: 0.8rem;
-}
-.buttons a:hover {
-    background: #444;
-}
-
-#pauseGame, #resumeGame, #resetBoard {
-    display: none;
-}
-
-.voice {
-    text-decoration: none;
-    font-size: 0.8rem;
-    background: #d46363;
-    color: #fff;
-    padding: 0.25rem 0.5rem;
-    margin: 0.25rem;
-    border-radius: 0.25rem;
-    display: inline-block;
-}
-.voice:hover {
-    background: #b85c5c;
-}
-.voice.active {
-    background: #444;
-}
-
-@keyframes rollOut {
-    0% { position: absolute; left: 100%; -webkit-transform: rotate(0deg); }
-    100% { position: absolute; left: 25%;  -webkit-transform: rotate(360deg); }
-}
-
 @keyframes blink {
     0% { color: white; }
     50% { color: #444; }
     100% { color: white; }
+}
+
+/* Balls */
+#lastBall, #newBall, .ballText {
+    font-size: 1rem;
+    line-height: 1;
+    padding: 1em 1.5em;
+    margin: 0.5em auto;
+    border-radius: 100%;
+    font-weight: bold;
+}
+#lastCall, #currentCall {
+    background: #ececec;
+    min-height: 8rem;
+}
+.ballText {
+    border: 1px solid red;
+    box-shadow: inset -0.5rem -0.5rem 2rem 0 rgba(0, 0, 0, 0.16), 0 0 0 0.25rem white;
+    background: radial-gradient(circle at 20% 20%, white, #efefef);
+}
+.ballText.single {
+    padding: 1em 1.7em;
+}
+#lastBall:empty, #newBall:empty {
+    display: none;
+}
+
+/* Ball Colors */
+#newBall.blue, #lastBall.blue {
+    background: radial-gradient(circle at 20% 20%, blue, #000062);
+}
+#newBall.blue .ballText, #lastBall.blue .ballText {
+    border: 0.15rem solid blue;
+}
+#newBall.red, #lastBall.red {
+    background: radial-gradient(circle at 20% 20%, red, #9e0000);
+}
+#newBall.red .ballText, #lastBall.red .ballText {
+    border: 0.15rem solid red;
+}
+#newBall.white, #lastBall.white {
+    background: radial-gradient(circle at 20% 20%, white, #b6b6b6);
+}
+#newBall.white .ballText, #lastBall.white .ballText {
+    border: 0.15rem solid red;
+}
+#newBall.green, #lastBall.green {
+    background: radial-gradient(circle at 20% 20%, green, #004800);
+}
+#newBall.green .ballText, #lastBall.green .ballText {
+    border: 0.15rem solid green;
+}
+#newBall.orange, #lastBall.orange {
+    background: radial-gradient(circle at 20% 20%, orange, #af7900);
+}
+#newBall.orange .ballText, #lastBall.orange .ballText {
+    border: 0.15rem solid orange;
+}
+
+/* Footer */
+footer p {
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+/* Mobile Sizes */
+@media screen and (max-width: 40em){
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    h3, h4 {
+        margin-top: 1rem;
+        display: block;
+        width: 100%;
+    }
+    .voice {
+        width: 48%;
+        margin: 1%;
+    }
+    .letter-block {
+        display: inline-block;
+        width: 20%;
+    }
+    .letter, .ball {
+        width: 100%;
+    }
+    #bingoboard .ball, #bingoboard .letter {
+        /*font-size: 0.7rem;*/
+    }
 }

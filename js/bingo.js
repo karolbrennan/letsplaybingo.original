@@ -1,4 +1,5 @@
 var bingoBoard = document.getElementById("bingoboard"),
+    buttons = document.getElementById("buttons"),
     bingoLetters = ["B", "I", "N", "G", "O"],
     allBingoNumbers = [],
     calledBingoNumbers = [],
@@ -8,11 +9,6 @@ var bingoBoard = document.getElementById("bingoboard"),
     ],
     selectedVoice = 'Daniel',
     callBallInterval;
-
-document.getElementById('startGame').addEventListener('click', startGame);
-document.getElementById('pauseGame').addEventListener('click', pauseGame);
-document.getElementById('resumeGame').addEventListener('click', resumeGame);
-document.getElementById('resetBoard').addEventListener('click', resetBoard);
 
 // set initial voice to a random one
 selectedVoice = availableVoices[Math.floor(Math.random() * availableVoices.length)];
@@ -25,19 +21,51 @@ function generateBoard(bingoBoard) {
     var currentBall = 1;
     for (var i = 0; i < bingoLetters.length; i++) {
         // Add a div that shows the current letter
-        var bingoLetter = createDiv('letter', bingoLetters[i]);
-        var letterBlock = createDiv('letter-block', "");
-        bingoBoard.appendChild(letterBlock);
+        var letterBlock = createDiv('letter-block valign-wrapper ', "");
+        var bingoLetter = createDiv('letter valign red darken-1 white-text ', bingoLetters[i]);
         letterBlock.appendChild(bingoLetter);
+        bingoBoard.appendChild(letterBlock);
         currentBall = add15Balls(currentBall, letterBlock, bingoLetters[i]);
     }
+    generateButtons();
+}
+
+function generateButtons(){
+    var startGameButton = document.createElement('a');
+    startGameButton.className = 'btn green waves-effect ';
+    startGameButton.setAttribute('id', 'startGame');
+    startGameButton.addEventListener('click', startGame);
+    startGameButton.appendChild(document.createTextNode("Start Game"));
+
+    var resetBoardButton = document.createElement('a');
+    resetBoardButton.className = 'btn red waves-effect disabled ';
+    resetBoardButton.setAttribute('id', 'resetBoard');
+    resetBoardButton.addEventListener('click', resetBoard);
+    resetBoardButton.appendChild(document.createTextNode("Reset Board"));
+
+    var pauseGameButton = document.createElement('a');
+    pauseGameButton.className = 'btn orange waves-effect disabled ';
+    pauseGameButton.setAttribute('id', 'pauseGame');
+    pauseGameButton.addEventListener('click', pauseGame);
+    pauseGameButton.appendChild(document.createTextNode("Pause"));
+
+    var resumeGameButton = document.createElement('a');
+    resumeGameButton.className = 'btn purple waves-effect disabled ';
+    resumeGameButton.setAttribute('id', 'resumeGame');
+    resumeGameButton.addEventListener('click', resumeGame);
+    resumeGameButton.appendChild(document.createTextNode("Resume"));
+
+    buttons.appendChild(startGameButton);
+    buttons.appendChild(resetBoardButton);
+    buttons.appendChild(pauseGameButton);
+    buttons.appendChild(resumeGameButton);
 }
 
 // add the bingo balls to the board
 function add15Balls(ballNumber, letterBlock, letter){
     var totalBalls = ballNumber + 15;
     for(ballNumber; ballNumber < totalBalls; ballNumber++){
-        var newBall = createDiv('ball ' + letter + ballNumber, (ballNumber));
+        var newBall = createDiv('ball valign ' + letter + ballNumber, (ballNumber));
         letterBlock.appendChild(newBall);
         allBingoNumbers.push(letter + ballNumber);
     }
@@ -67,27 +95,26 @@ function clearCurrentBall(){
 function startGame(){
     speak("Let's play bingo!");
     console.log("Start game!");
+    document.getElementById('startGame').classList.add('disabled');
+    document.getElementById('pauseGame').classList.remove('disabled');
+    document.getElementById('resetBoard').classList.remove('disabled');
     calledBingoNumbers = [];
-    callNumber(calledBingoNumbers);
     callBallInterval = setInterval(callNumber, 10000, calledBingoNumbers);
-    document.getElementById("pauseGame").style.display = "inline-block";
-    document.getElementById("resetBoard").style.display = "inline-block";
 }
 
 // pause the current game
 function pauseGame(){
     console.log("Pause game!");
+    document.getElementById('pauseGame').classList.add('disabled');
+    document.getElementById('resumeGame').classList.remove('disabled');
     clearInterval(callBallInterval);
-    document.getElementById("pauseGame").style.display = "none";
-    document.getElementById("resumeGame").style.display = "inline-block";
 }
 
 // resume the current game
 function resumeGame(){
     console.log("Resume game!");
-    document.getElementById("resumeGame").style.display = "none";
-    document.getElementById("pauseGame").style.display = "inline-block";
-
+    document.getElementById('resumeGame').classList.add('disabled');
+    document.getElementById('pauseGame').classList.remove('disabled');
     callNumber(calledBingoNumbers);
     callBallInterval = setInterval(callNumber, 10000, calledBingoNumbers);
 }
@@ -95,14 +122,13 @@ function resumeGame(){
 // reset the board
 function resetBoard(){
     console.log("Reset game!");
+    document.getElementById('startGame').classList.remove('disabled');
+    document.getElementById('resetBoard').classList.add('disabled');
     bingoBoard.innerHTML = '';
-    document.getElementById('lastCall').innerHTML = '';
-    document.getElementById('newCall').innerHTML = '';
+    document.getElementById('lastBall').innerHTML = '';
+    document.getElementById('newBall').innerHTML = '';
+    document.getElementById('buttons').innerHTML = '';
     generateBoard(bingoBoard);
-
-    document.getElementById("pauseGame").style.display = "none";
-    document.getElementById("resumeGame").style.display = "none";
-    document.getElementById("resetBoard").style.display = "none";
 }
 
 // call a bingo number
@@ -112,7 +138,7 @@ function callNumber(calledBingoNumbers) {
     } else {
         clearCurrentBall();
     }
-    var existingBall = document.getElementById('currentBall');
+    var existingBall = document.getElementById('newBall');
     if(existingBall){
         existingBall.setAttribute('id', 'lastBall');
         var lastCall = document.getElementById('lastCall');
@@ -148,16 +174,18 @@ function callNumber(calledBingoNumbers) {
     }
 
     var newBallElement = document.createElement('div');
-    newBallElement.setAttribute('id','currentBall');
-    newBallElement.className = color;
+        newBallElement.setAttribute('id','newBall');
+        newBallElement.className = color + " valign-wrapper ";
     var newBallText = document.createElement('div');
-    newBallText.className = 'ballText';
+        newBallText.className = 'ballText valign center-align ';
     var splitBall = newBall.split('');
-    newBallText.innerHTML = splitBall[0] + "<br>" + splitBall[1];
+        newBallText.innerHTML = splitBall[0] + "<br>" + splitBall[1];
     if(splitBall[2] !== undefined){
         newBallText.innerHTML += splitBall[2];
+    } else {
+        newBallText.className += 'single ';
     }
-    document.getElementById('newCall').appendChild(newBallElement);
+    document.getElementById('currentCall').appendChild(newBallElement);
     newBallElement.appendChild(newBallText);
 
     // pull this ball from the array of numbers
@@ -188,27 +216,32 @@ function initSpeak(){
     var supportMsg = document.getElementById('msg');
 
     if ('speechSynthesis' in window) {
-        addVoiceEventListeners();
+        addVoiceButtonsAndListeners();
     } else {
         supportMsg.innerHTML = 'Sorry! Your browser <strong>does not support</strong> the reading of bingo balls out loud!<br>Try this in <a href="https://www.google.com/chrome/browser/canary.html">Chrome Canary</a>.';
         supportMsg.classList.add('not-supported');
     }
 }
 
-function addVoiceEventListeners(){
-    var voiceButtons = document.getElementsByClassName('voice');
-    for (var a = 0; a < voiceButtons.length; a++) {
-        voiceButtons[a].addEventListener('click', function (){
-           var active = document.getElementsByClassName('active');
-           if(active) {
+// generates the available voice buttons and adds event listeners to them
+function addVoiceButtonsAndListeners() {
+    var voicesDiv = document.getElementById("voices");
+    for (var i = 0; i < availableVoices.length; i++) {
+        var button = document.createElement('a');
+        button.className = 'voice cyan lighten-1 btn waves-effect ';
+        button.setAttribute('data-voice', availableVoices[i]);
+        button.appendChild(document.createTextNode(availableVoices[i]));
+        button.addEventListener('click', function (){
+            var active = document.getElementsByClassName('voice');
+            if (active) {
                 for (var i = 0; i < active.length; i++) {
-                    active[i].classList.remove("active");
+                    active[i].classList.remove("disabled");
                 }
             }
-
-           selectedVoice = this.getAttribute('data-voice');
-           this.classList.add('active');
+            selectedVoice = this.getAttribute('data-voice');
+            this.classList.add('disabled');
         });
+        voicesDiv.appendChild(button);
     }
 }
 
