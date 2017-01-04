@@ -7,11 +7,10 @@ var bingoBoard = document.getElementById("bingoboard"),
         "Daniel", "Fiona", "Karen", "Moira", "Samantha", "Tessa",
         "Google US English", "Google UK English Male", "Google UK English Female"
     ],
-    selectedVoice = 'Daniel',
     callBallInterval;
 
 // set initial voice to a random one
-selectedVoice = availableVoices[Math.floor(Math.random() * availableVoices.length)];
+var selectedVoice = availableVoices[Math.floor(Math.random() * availableVoices.length)];
 initSpeak();
 
 // generate the bingo board to show on screen
@@ -228,7 +227,11 @@ function addVoiceButtonsAndListeners() {
     var voicesDiv = document.getElementById("voices");
     for (var i = 0; i < availableVoices.length; i++) {
         var button = document.createElement('a');
-        button.className = 'voice cyan lighten-1 btn waves-effect ';
+        if(selectedVoice === availableVoices[i]) {
+            button.className = 'voice cyan lighten-1 btn waves-effect disabled ';
+        } else {
+            button.className = 'voice cyan lighten-1 btn waves-effect ';
+        }
         button.setAttribute('data-voice', availableVoices[i]);
         button.appendChild(document.createTextNode(availableVoices[i]));
         button.addEventListener('click', function (){
