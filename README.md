@@ -16,5 +16,5 @@ This project is built on the back of my own custom [Vagrant Box](https://github.
 - JavaScript
 
 ### Frameworks / Libraries Used
-- Foundation CSS
-- Built-in speech synthesis
+- Materialize CSS
+- Built-in browser speech synthesis
