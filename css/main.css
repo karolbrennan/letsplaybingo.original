@@ -1,20 +1,24 @@
 /* Typography */
 body { color: #444; }
 html, body, p, .btn { font-size: 1rem; }
-h1 { font-size: 2.5rem; margin: 0 0 0.5em; font-weight: bold; text-transform: uppercase; }
+h1 { font-size: 2.5rem; margin: 0; font-weight: bold; text-transform: uppercase; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1rem; margin: 0; padding: 0.5em; text-align: center; background: #3d3d3d; color: #fff; }
 h4 { font-size: 1rem; margin: 0.75em 1em; float: left; }
 #voices .btn { font-size: 0.7rem; }
 
 /* Spacing */
-body { padding: 2rem; }
+body { padding: 2rem 1rem 0 }
 .btn { margin: 0.25em; }
-
+.addthis_inline_share_toolbox {
+    clear: none !important;
+    display: inline-block;
+    vertical-align: middle;
+}
 /* Buttons */
 #buttons { margin-top: 1rem; }
 #buttons a {
-    width: 48%;
+    width: 23%;
     margin: 1%;
     font-weight: bold;
 }
@@ -53,7 +57,7 @@ body { padding: 2rem; }
 }
 #lastCall, #currentCall {
     background: #ececec;
-    min-height: 8rem;
+    min-height: 10rem;
 }
 .ballText {
     border: 1px solid red;
@@ -100,9 +104,11 @@ body { padding: 2rem; }
 }
 
 /* Footer */
+footer {
+    border-top: 1px solid #444;
+}
 footer p {
     font-size: 0.75rem;
-    font-style: italic;
 }
 
 /* Mobile Sizes */
@@ -115,6 +121,9 @@ footer p {
         margin-top: 1rem;
         display: block;
         width: 100%;
+    }
+    #buttons a {
+        width: 48%;
     }
     .voice {
         width: 48%;

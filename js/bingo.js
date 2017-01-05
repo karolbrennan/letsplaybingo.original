@@ -1,21 +1,17 @@
+/**
+ * Original code before I re-factored it to be object oriented
+ */
+
 var bingoBoard = document.getElementById("bingoboard"),
     buttons = document.getElementById("buttons"),
     bingoLetters = ["B", "I", "N", "G", "O"],
     allBingoNumbers = [],
     calledBingoNumbers = [],
-    availableVoices = [
-        "Daniel", "Fiona", "Karen", "Moira", "Samantha", "Tessa",
-        "Google US English", "Google UK English Male", "Google UK English Female"
-    ],
     callBallInterval;
-
-// set initial voice to a random one
-var selectedVoice = availableVoices[Math.floor(Math.random() * availableVoices.length)];
-initSpeak();
 
 // generate the bingo board to show on screen
 function generateBoard(bingoBoard) {
-    speak("");
+    initSpeak();
     // loop through the bingo letters
     var currentBall = 1;
     for (var i = 0; i < bingoLetters.length; i++) {
@@ -92,8 +88,10 @@ function clearCurrentBall(){
 
 // start a new game
 function startGame(){
-    speak("Let's play bingo!");
-    console.log("Start game!");
+
+    if( responsiveVoice.voiceSupport()) {
+        responsiveVoice.speak("Let's play bingo!");
+    }
     document.getElementById('startGame').classList.add('disabled');
     document.getElementById('pauseGame').classList.remove('disabled');
     document.getElementById('resetBoard').classList.remove('disabled');
@@ -103,7 +101,6 @@ function startGame(){
 
 // pause the current game
 function pauseGame(){
-    console.log("Pause game!");
     document.getElementById('pauseGame').classList.add('disabled');
     document.getElementById('resumeGame').classList.remove('disabled');
     clearInterval(callBallInterval);
@@ -111,7 +108,6 @@ function pauseGame(){
 
 // resume the current game
 function resumeGame(){
-    console.log("Resume game!");
     document.getElementById('resumeGame').classList.add('disabled');
     document.getElementById('pauseGame').classList.remove('disabled');
     callNumber(calledBingoNumbers);
@@ -120,13 +116,14 @@ function resumeGame(){
 
 // reset the board
 function resetBoard(){
-    console.log("Reset game!");
     document.getElementById('startGame').classList.remove('disabled');
     document.getElementById('resetBoard').classList.add('disabled');
-    bingoBoard.innerHTML = '';
+    document.getElementById('pauseGame').classList.add('disabled');
+    document.getElementById('resumeGame').classList.add('disabled');
     document.getElementById('lastBall').innerHTML = '';
     document.getElementById('newBall').innerHTML = '';
     document.getElementById('buttons').innerHTML = '';
+    bingoBoard.innerHTML = '';
     generateBoard(bingoBoard);
 }
 
@@ -147,10 +144,12 @@ function callNumber(calledBingoNumbers) {
 
     var newBall = allBingoNumbers[Math.floor(Math.random() * allBingoNumbers.length)];
     // call the number aloud
-    speak(newBall);
-    var split = newBall.split("");
-    for (var i = 0; i < split.length; i++) {
-        speak(split[i].toLowerCase());
+    if( responsiveVoice.voiceSupport()) {
+        responsiveVoice.speak(newBall);
+        var split = newBall.split("");
+        for (var i = 0; i < split.length; i++) {
+            responsiveVoice.speak(split[i].toLowerCase());
+        }
     }
 
     var color = '';
@@ -208,18 +207,23 @@ function createDiv(divClass, content) {
 
 function initSpeak(){
     // SPEECH SYNTHESIS FOR CALLING OUT BALLS
-
-    /*
-     * Check for browser support
-     */
     var supportMsg = document.getElementById('msg');
-
-    if ('speechSynthesis' in window) {
-        addVoiceButtonsAndListeners();
+    if( responsiveVoice.voiceSupport()) {
+        var voiceList = responsiveVoice.getVoices(),
+            availableVoices = [];
+        for (var i = 0; i < voiceList.length; i++) {
+            availableVoices.push(voiceList[i].name);
+        }
+        // start speak
+        responsiveVoice.speak("");
+        // set initial voice to a random one
+        responsiveVoice.setDefaultVoice(availableVoices[Math.floor(Math.random() * availableVoices.length)]);
+        addVoiceButtonsAndListeners(availableVoices);
     } else {
-        supportMsg.innerHTML = 'Sorry! Your browser <strong>does not support</strong> the reading of bingo balls out loud!<br>Try this in <a href="https://www.google.com/chrome/browser/canary.html">Chrome Canary</a>.';
+        supportMsg.innerHTML = 'Sorry! Your browser <strong>does not support</strong> the reading of bingo balls aloud!<br>Try this in <a href="https://www.google.com/chrome/browser/canary.html">Chrome</a>.';
         supportMsg.classList.add('not-supported');
     }
+    return voiceList;
 }
 
 // generates the available voice buttons and adds event listeners to them
@@ -242,24 +246,9 @@ function addVoiceButtonsAndListeners() {
                 }
             }
             selectedVoice = this.getAttribute('data-voice');
+            responsiveVoice.setDefaultVoice(selectedVoice);
             this.classList.add('disabled');
         });
         voicesDiv.appendChild(button);
     }
-}
-
-function speak(text) {
-    // Create a new instance of SpeechSynthesisUtterance.
-    var msg = new SpeechSynthesisUtterance();
-    // Set the text.
-    msg.text = text;
-
-    if (selectedVoice !== undefined) {
-        msg.voice = speechSynthesis.getVoices().filter(function(voice) {
-            return voice.name == selectedVoice;
-        })[0];
-    }
-
-    // Queue this utterance.
-    window.speechSynthesis.speak(msg, selectedVoice);
 }
