@@ -21,7 +21,7 @@ var Bingo = function(bingoBoardElement) {
      * @todo make this selectable by users
      * @type {number}
      */
-    this.delay = 2500;
+    this.delay = 8000;
     /**
      * Interval for calling bingo balls
      */
