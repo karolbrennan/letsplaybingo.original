@@ -178,8 +178,8 @@ var Bingo = function(bingoBoardElement) {
             if(currentBallOnBoard){
                 // if there is a ball on board that is marked as current, change it to called
                 for (var i = 0; i < currentBallOnBoard.length; i++){
-                    currentBallOnBoard[i].classList.remove("current");
                     currentBallOnBoard[i].classList.add("called");
+                    currentBallOnBoard[i].classList.remove("current");
                 }
             }
 
