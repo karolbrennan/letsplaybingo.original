@@ -46,7 +46,7 @@ var Bingo = function(bingoBoardElement) {
     /**
      * Public Function: Generate the bingo board
      */
-    this.generateBingoBoard = function () {
+    this.generateBingoBoard = function() {
         /**
          * Variable that holds the current bingo ball number
          * @type {number}
@@ -73,7 +73,7 @@ var Bingo = function(bingoBoardElement) {
     /**
      * Private Function: Generate the buttons that control the game / board
      */
-    function generateButtons(){
+    function generateButtons () {
         startGameButton = helper.createDomElement(
             'a', 'btn green waves-effect ', 'Start Game', '', ['id', 'startGame']);
         startGameButton.addEventListener('click', startGame);
@@ -91,7 +91,7 @@ var Bingo = function(bingoBoardElement) {
         resetGameButton.addEventListener('click', resetGame);
 
         var buttons = [ startGameButton, pauseGameButton,
-                        resumeGameButton, resetGameButton];
+            resumeGameButton, resetGameButton ];
 
         for (var i = 0; i < buttons.length; i++) {
             document.getElementById('buttons').appendChild(buttons[i]);
@@ -101,17 +101,20 @@ var Bingo = function(bingoBoardElement) {
     /**
      * Private Function: Start Game
      */
-    function startGame(){
+    function startGame (){
         pauseGameButton.classList.remove('disabled');
         resetGameButton.classList.remove('disabled');
         this.classList.add('disabled');
-        bingo.interval = setInterval(callBingoBall, bingo.delay, bingo.calledBingoNumbers);
+        // call the first number right away
+        callBingoBall();
+        // set up interval for future calls
+        bingo.interval = setInterval(callBingoBall, bingo.delay);
     }
 
     /**
      * Private Function: Pause Game
      */
-    function pauseGame(){
+    function pauseGame (){
         resumeGameButton.classList.remove('disabled');
         this.classList.add('disabled');
         clearInterval(bingo.interval);
@@ -120,16 +123,19 @@ var Bingo = function(bingoBoardElement) {
     /**
      * Private Function: Resume Game
      */
-    function resumeGame(){
+    function resumeGame (){
         pauseGameButton.classList.remove('disabled');
         this.classList.add('disabled');
-        bingo.interval = setInterval(callBingoBall, bingo.delay, bingo.calledBingoNumbers);
+        // call the first number right away
+        callBingoBall();
+        // set up interval for future calls
+        bingo.interval = setInterval(callBingoBall, bingo.delay);
     }
 
     /**
      * Private Function: Reset Game
      */
-    function resetGame(){
+    function resetGame (){
         // clear interval
         clearInterval(bingo.interval);
         // reset the called bingo numbers
