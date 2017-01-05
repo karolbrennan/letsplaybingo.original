@@ -102,6 +102,9 @@ var Bingo = function(bingoBoardElement) {
      * Private Function: Start Game
      */
     function startGame (){
+        if(bingo.speechEnabled) {
+            speech.say("Let's play bingo!");
+        }
         pauseGameButton.classList.remove('disabled');
         resetGameButton.classList.remove('disabled');
         this.classList.add('disabled');
