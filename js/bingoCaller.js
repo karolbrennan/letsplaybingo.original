@@ -150,6 +150,7 @@ var Bingo = function(bingoBoardElement) {
         // clear the last/current calls
         document.getElementById('lastCall').innerHTML = '';
         document.getElementById('currentCall').innerHTML = '';
+        document.getElementById('callNumber').innerHTML = '';
         // regenerate bingo board
         bingo.generateBingoBoard();
     }
@@ -181,6 +182,7 @@ var Bingo = function(bingoBoardElement) {
             // get variables for last call and current call elements
             var lastCall = document.getElementById('lastCall');
             var currentCall = document.getElementById('currentCall');
+            var callNumber = document.getElementById('callNumber');
 
             // get any current elements on the board
             var currentBallOnBoard = document.getElementsByClassName("current");
@@ -254,6 +256,10 @@ var Bingo = function(bingoBoardElement) {
             for(var b = 0; b < current.length; b++){
                 current[b].classList.add("current");
             }
+
+            // keep track of number of balls called.
+            var ballCount = bingo.calledBingoNumbers.length;
+            callNumber.innerHTML = "<h3>Call Number: </h3><span>" + ballCount.toString() + "</span>";
         }
     }
 };
@@ -301,7 +307,7 @@ var Speech = function() {
                     }
                     var attributes = [];
                     attributes.push('data-voice', availableVoices[a]);
-                    var button = helper.createDomElement('a', classes, availableVoices[a].replace('Google', ''), '', attributes);
+                    var button = helper.createDomElement('a', classes, availableVoices[a], '', attributes);
                     button.addEventListener('click', function (){
                         var active = document.getElementsByClassName('voice');
                         if (active) {

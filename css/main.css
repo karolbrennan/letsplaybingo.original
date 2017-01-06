@@ -6,6 +6,7 @@ h2 { font-size: 2rem; }
 h3 { font-size: 1rem; margin: 0; padding: 0.5em; text-align: center; background: #3d3d3d; color: #fff; }
 h4 { font-size: 1rem; margin: 0.75em 1em; float: left; }
 #voices .btn { font-size: 0.7rem; }
+#callNumber span { font-weight: bold; }
 
 /* Spacing */
 body { padding: 2rem 1rem 0 }
@@ -26,6 +27,7 @@ body { padding: 2rem 1rem 0 }
 /* Sizing */
 #bingoboard { width: 100%; }
 .letter, .ball { width: 6.25%; }
+
 
 /* Bingo Board */
 .ball {
@@ -69,6 +71,13 @@ body { padding: 2rem 1rem 0 }
 }
 #lastBall:empty, #newBall:empty {
     display: none;
+}
+#callNumber {
+    background: #efefef;
+}
+#callNumber span {
+    padding: 1rem;
+    display: block;
 }
 
 /* Ball Colors */
