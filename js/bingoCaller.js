@@ -148,7 +148,7 @@ var Bingo = function(bingoBoardElement) {
         // clear bingo board
         bingoBoardElement.innerHTML = '';
         // reset inner HTML for ball
-        callNumber.innerHTML = "Current Call";
+        document.getElementById('callNumber').innerHTML = "Current Call";
         // clear the last/current calls
         document.getElementById('lastCall').innerHTML = '';
         document.getElementById('currentCall').innerHTML = '';
