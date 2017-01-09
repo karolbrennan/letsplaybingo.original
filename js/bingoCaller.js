@@ -142,7 +142,7 @@ var Bingo = function(bingoBoardElement) {
         // clear interval
         clearInterval(bingo.interval);
         // reset the called bingo numbers
-        calledBingoNumbers = [];
+        parent.calledBingoNumbers = [];
         // remove buttons
         document.getElementById('buttons').innerHTML = '';
         // clear bingo board
