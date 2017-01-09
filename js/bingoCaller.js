@@ -261,7 +261,7 @@ var Bingo = function(bingoBoardElement) {
 
             // keep track of number of balls called.
             var ballCount = bingoInstance.calledBingoNumbers.length;
-            callNumber.innerHTML = "<h3>Call Number: </h3><span>" + ballCount.toString() + "</span>";
+            callNumber.innerHTML = "Current Call / <span>Ball # " + ballCount.toString() + "</span>";
         }
     }
 };
@@ -290,21 +290,28 @@ var Speech = function() {
             // wait for the voices to load before continuing
             window.speechSynthesis.onvoiceschanged = function() {
                 var voiceList = window.speechSynthesis.getVoices();
-
-                // set default voice OBJECT to a random one on load
-                speechInstance.voice = voiceList[Math.floor(Math.random() * voiceList.length)];
+                var englishVoices = [];
 
                 // populate the list of voices
                 voicesDiv.innerHTML = "<h4>Choose Your Bingo Caller!</h4>";
 
+                // populate the array of english voices
                 for (var i = 0; i < voiceList.length; i++) {
-                    if( voiceList[i].lang.substring(0, 2) === 'en' && voiceList[i].name.substring(0,6) !== 'Google') {
+                    if (voiceList[i].lang.substring(0, 2) === 'en' && voiceList[i].name.substring(0, 6) !== 'Google') {
+                        englishVoices.push(voiceList[i]);
+                    }
+                }
+
+                // set default voice OBJECT to a random one on load
+                speechInstance.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
+
+                for (var a = 0; a < englishVoices.length; a++) {
                         var classes = 'voice cyan lighten-1 btn waves-effect ';
-                        if(speechInstance.voice === voiceList[i]){
+                        if(speechInstance.voice === englishVoices[a]){
                             classes += ' disabled ';
                         }
-                        var button = helper.createDomElement('a', classes, voiceList[i].name);
-                        button.setAttribute('data-voice', voiceList[i].name);
+                        var button = helper.createDomElement('a', classes, englishVoices[a].name);
+                        button.setAttribute('data-voice', englishVoices[a].name);
                         button.addEventListener('click', function() {
                             var active = document.getElementsByClassName('voice');
                             if (active) {
@@ -313,9 +320,9 @@ var Speech = function() {
                                 }
                             }
                             // go through all of the voices and set the matching one to the speech instance voice name
-                            for (var a = 0; a < voiceList.length; a++){
-                                if(voiceList[a].name === this.getAttribute('data-voice')){
-                                    speechInstance.voice = voiceList[a];
+                            for (var a = 0; a < englishVoices.length; a++){
+                                if(englishVoices[a].name === this.getAttribute('data-voice')){
+                                    speechInstance.voice = englishVoices[a];
                                 }
                             }
 
@@ -325,9 +332,8 @@ var Speech = function() {
                         voicesDiv.appendChild(button);
                     }
                 }
-            };
-            // if speech synthesis is not supported, display an error
-            // and a link to a supported browser
+        // if speech synthesis is not supported, display an error
+        // and a link to a supported browser
         } else {
             bingoInstance.speechEnabled = false;
             voicesDiv.innerHTML = "Sorry, your browser does not support our voice caller. Please download <a href='https://www.google.com/chrome/browser/canary.html'>Google Chrome</a> for the best bingo experience we have to offer!";
