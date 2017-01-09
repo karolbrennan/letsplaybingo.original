@@ -272,55 +272,58 @@ var Bingo = function(bingoBoardElement) {
  */
 var Speech = function() {
     /**
-     * Voice, populated by user input
-     * @type {string}
+     * Voice object, populated by user input
+     * @type {object}
      */
-    this.voice = '';
+    this.voice = null;
 
     /**
      * Initialize speech synthesis
      */
     this.initSpeechSynthesis = function () {
         var voicesDiv = document.getElementById("voices");
-        // if speech synthesis is supported by the browser populate the available voice choices. NOTE: Voice synthesis is not supported in IE or Android's native browser at this time.
+        // if speech synthesis is supported by the browser populate the available voice choices.
+        // NOTE: Voice synthesis is not supported in IE or Android's native browser at this time.
         if ('speechSynthesis' in window) {
             bingoInstance.speechEnabled = true;
             this.say("");
             // wait for the voices to load before continuing
             window.speechSynthesis.onvoiceschanged = function() {
                 var voiceList = window.speechSynthesis.getVoices();
-                var availableVoices = [];
+
+                // set default voice OBJECT to a random one on load
+                speechInstance.voice = voiceList[Math.floor(Math.random() * voiceList.length)];
 
                 // populate the list of voices
                 voicesDiv.innerHTML = "<h4>Choose Your Bingo Caller!</h4>";
+
                 for (var i = 0; i < voiceList.length; i++) {
-                    if( voiceList[i].lang.substring(0, 2) === 'en' ) {
-                        availableVoices.push(voiceList[i].name);
-                    }
-                }
-
-                // set default voice to a random one on load
-                speechInstance.voice = availableVoices[Math.floor(Math.random() * availableVoices.length)];
-
-                for (var a = 0; a < availableVoices.length; a++) {
-                    var classes = 'voice cyan lighten-1 btn waves-effect ';
-                    if(speechInstance.voice === availableVoices[a]){
-                        classes += ' disabled ';
-                    }
-                    var button = helper.createDomElement('a', classes, availableVoices[a]);
-                    button.setAttribute('data-voice', availableVoices[a]);
-                    button.addEventListener('click', function (){
-                        var active = document.getElementsByClassName('voice');
-                        if (active) {
-                            for (var b = 0; b < active.length; b++) {
-                                active[b].classList.remove("disabled");
-                            }
+                    if( voiceList[i].lang.substring(0, 2) === 'en' && voiceList[i].name.substring(0,6) !== 'Google') {
+                        var classes = 'voice cyan lighten-1 btn waves-effect ';
+                        if(speechInstance.voice === voiceList[i]){
+                            classes += ' disabled ';
                         }
-                        speechInstance.voice = this.getAttribute('data-voice');
-                        speechInstance.say("Let's play bingo!");
-                        this.classList.add('disabled');
-                    });
-                    voicesDiv.appendChild(button);
+                        var button = helper.createDomElement('a', classes, voiceList[i].name);
+                        button.setAttribute('data-voice', voiceList[i].name);
+                        button.addEventListener('click', function() {
+                            var active = document.getElementsByClassName('voice');
+                            if (active) {
+                                for (var i = 0; i < active.length; i++) {
+                                    active[i].classList.remove("disabled");
+                                }
+                            }
+                            // go through all of the voices and set the matching one to the speech instance voice name
+                            for (var a = 0; a < voiceList.length; a++){
+                                if(voiceList[a].name === this.getAttribute('data-voice')){
+                                    speechInstance.voice = voiceList[a];
+                                }
+                            }
+
+                            speechInstance.say("Let's play bingo!");
+                            this.classList.add('disabled');
+                        });
+                        voicesDiv.appendChild(button);
+                    }
                 }
             };
             // if speech synthesis is not supported, display an error
@@ -341,14 +344,9 @@ var Speech = function() {
         var msg = new SpeechSynthesisUtterance();
         // Set the text.
         msg.text = text;
-
-        if (speechInstance.voice !== '') {
-            msg.voice = speechSynthesis.getVoices().filter(function(voice) {
-                return voice.name == speechInstance.voice;
-            })[0];
-        }
-
-        // Queue this utterance.
+        // set the voice
+        msg.voice = speechInstance.voice;
+        // queue the speech
         window.speechSynthesis.speak(msg, msg.voice);
     }
 
