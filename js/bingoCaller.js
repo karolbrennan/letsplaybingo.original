@@ -152,7 +152,6 @@ var Bingo = function(bingoBoardElement) {
         // clear the last/current calls
         document.getElementById('lastCall').innerHTML = '';
         document.getElementById('currentCall').innerHTML = '';
-        document.getElementById('callNumber').innerHTML = '';
         // regenerate bingo board
         bingoInstance.generateBingoBoard();
     }
