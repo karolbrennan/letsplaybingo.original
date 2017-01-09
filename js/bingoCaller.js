@@ -147,6 +147,8 @@ var Bingo = function(bingoBoardElement) {
         document.getElementById('buttons').innerHTML = '';
         // clear bingo board
         bingoBoardElement.innerHTML = '';
+        // reset inner HTML for ball
+        callNumber.innerHTML = "Current Call";
         // clear the last/current calls
         document.getElementById('lastCall').innerHTML = '';
         document.getElementById('currentCall').innerHTML = '';
@@ -207,10 +209,11 @@ var Bingo = function(bingoBoardElement) {
             // generate a new ball out of the remaining bingo numbers
             var newBall = bingoInstance.allBingoNumbers[Math.floor(Math.random() * bingoInstance.allBingoNumbers.length)];
 
+            var split = newBall.split("");
+
             // if speech is enabled, call the numbers aloud
             if(bingoInstance.speechEnabled){
                 speechInstance.say(newBall);
-                var split = newBall.split("");
                 for (var a = 0; a < split.length; a++) {
                     speechInstance.say(split[a].toLowerCase());
                 }
