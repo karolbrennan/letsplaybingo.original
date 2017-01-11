@@ -325,6 +325,7 @@ var Speech = function() {
                             for (var a = 0; a < englishVoices.length; a++){
                                 if(englishVoices[a].name === this.getAttribute('data-voice')){
                                     speechInstance.voice = englishVoices[a];
+                                    this.classList.add('disabled');
                                 }
                             }
 
@@ -332,7 +333,6 @@ var Speech = function() {
                             if(this.calledBingoNumbers.length === 0){
                                 speechInstance.say("Let's play bingo!");
                             }
-                            this.classList.add('disabled');
                         });
                         voicesDiv.appendChild(button);
                     }
