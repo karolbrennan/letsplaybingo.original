@@ -328,7 +328,10 @@ var Speech = function() {
                                 }
                             }
 
-                            speechInstance.say("Let's play bingo!");
+                            // if the bingo game hasn't started yet, play a test vocal for hearing the voice options
+                            if(this.calledBingoNumbers.length === 0){
+                                speechInstance.say("Let's play bingo!");
+                            }
                             this.classList.add('disabled');
                         });
                         voicesDiv.appendChild(button);
