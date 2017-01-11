@@ -304,7 +304,7 @@ var Speech = function() {
                     }
                 }
 
-                // set default voice OBJECT to a random one on load
+                // set default voice object to a random one on load
                 speechInstance.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
 
                 for (var a = 0; a < englishVoices.length; a++) {
@@ -314,29 +314,12 @@ var Speech = function() {
                         }
                         var button = helper.createDomElement('a', classes, englishVoices[a].name);
                         button.setAttribute('data-voice', englishVoices[a].name);
-                        button.addEventListener('click', function() {
-                            var active = document.getElementsByClassName('voice');
-                            if (active) {
-                                for (var i = 0; i < active.length; i++) {
-                                    active[i].classList.remove("disabled");
-                                }
-                            }
-                            // go through all of the voices and set the matching one to the speech instance voice name
-                            for (var a = 0; a < englishVoices.length; a++){
-                                if(englishVoices[a].name === this.getAttribute('data-voice')){
-                                    speechInstance.voice = englishVoices[a];
-                                    this.classList.add('disabled');
-                                }
-                            }
-
-                            // if the bingo game hasn't started yet, play a test vocal for hearing the voice options
-                            if(this.calledBingoNumbers.length === 0){
-                                speechInstance.say("Let's play bingo!");
-                            }
+                        button.addEventListener('click', function(){
+                            setVoice(this, englishVoices);
                         });
                         voicesDiv.appendChild(button);
                     }
-                }
+                };
         // if speech synthesis is not supported, display an error
         // and a link to a supported browser
         } else {
@@ -345,6 +328,33 @@ var Speech = function() {
             voicesDiv.classList.add('error');
         }
     };
+
+    /**
+     * Sets the voice object and handles button styling,
+     * enabling and disabling - will also allow the voice
+     * buttons to say hi if a game isn't currently going
+     * @param button
+     * @param englishVoices
+     */
+    function setVoice(button, englishVoices) {
+        var active = document.getElementsByClassName('voice');
+        if (active) {
+            for (var i = 0; i < active.length; i++) {
+                active[i].classList.remove("disabled");
+            }
+        }
+        // go through all of the voices and set the matching one to the speech instance voice name
+        for (var a = 0; a < englishVoices.length; a++){
+            if(englishVoices[a].name === button.getAttribute('data-voice')){
+                speechInstance.voice = englishVoices[a];
+                button.classList.add('disabled');
+            }
+        }
+        // if the bingo game hasn't started yet, play a test vocal for hearing the voice options
+        if(bingoInstance.calledBingoNumbers.length == 0){
+            speechInstance.say("Hi, I'm " + speechInstance.voice.name + "!");
+        }
+    }
 
     /**
      * Public function for speaking text aloud
