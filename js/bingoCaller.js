@@ -322,7 +322,6 @@ var Speech = function() {
             if(window.navigator.userAgent.toLowerCase().indexOf("chrome") == -1) {
                 loadVoices();
             } else {
-                console.log("It's Chrome");
                 // wait for voices to load
                 window.speechSynthesis.onvoiceschanged = function() {
                     loadVoices();
