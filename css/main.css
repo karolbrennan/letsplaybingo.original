@@ -9,27 +9,45 @@ h4 { font-size: 1rem; margin: 0.75em 1em; float: left; }
 #voices .btn {
     font-size: 0.7rem;
     padding: 0.5em 1em;
-    line-height: 1.2;
+    line-height: 1.5;
     height: auto;
 }
 .error {
     color: red;
     font-size: 0.9rem;
 }
+.description {
+    margin: 0.5rem 0 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.9rem;
+}
 
 /* Spacing */
-body { padding: 2rem 1rem 0 }
+body { padding: 0;}
 .btn { margin: 0.25em; }
+header { padding: 2rem 1.5rem 0; }
+header .row:not(:last-of-type) {
+    margin-bottom: 0;
+}
+section { padding: 0 1.5rem; }
+footer { padding: 1rem 1.5rem 0.5rem; }
 .addthis_inline_share_toolbox {
     clear: none !important;
     display: inline-block;
     vertical-align: middle;
 }
+.letter-block:first-of-type > div {
+    padding-top: 0.5rem;
+}
+.letter-block:last-of-type > div {
+    padding-bottom: 0.5rem;
+}
+
 /* Buttons */
-#buttons { margin-top: 1rem; }
 #buttons a {
-    width: 23%;
-    margin: 1%;
+    width: 48%;
+    margin: 0 1% 2%;
     font-weight: bold;
 }
 
@@ -69,6 +87,7 @@ body { padding: 2rem 1rem 0 }
 #lastCall, #currentCall {
     background: #ececec;
     min-height: 10rem;
+    margin-bottom: 2rem;
 }
 .ballText {
     border: 1px solid red;
@@ -120,7 +139,7 @@ body { padding: 2rem 1rem 0 }
 
 /* Footer */
 footer {
-    border-top: 1px solid #444;
+    background: #f3f3f3;
 }
 footer p {
     font-size: 0.75rem;

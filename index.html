@@ -2,13 +2,17 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
     <title>Let's Play Bingo! | Free Online Bingo Caller</title>
+
     <meta charset="UTF-8">
     <meta name="description" content="Free Online Bingo Caller: use this bingo caller to host your own bingo games at home! You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!">
     <meta name="keywords" content="bingo, free online bingo caller, free bingo caller, bingo caller, host your own bingo games, bingo games at home, free bingo app no downloads">
     <meta name="author" content="Karol Brennan">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta property="og:image" content="icons/ogimage.png" />
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
@@ -22,57 +26,63 @@
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-    <link rel="manifest" href="icons/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
 
+    <link rel="manifest" href="icons/manifest.json">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body class="flow-text">
 
 <header>
     <div class="row">
         <div class="col s12 m6">
             <h1>Let's Play Bingo!</h1>
-            <p>Use this free bingo caller to host your own bingo games at home! You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!</p>
-            <h4>Share This!</h4> <div class="addthis_inline_share_toolbox"></div>
         </div>
-        <div class="col s12 m6">
-            <div class="row">
-                <div class="col s12 m6">
-                    <h3>Last Call</h3>
-                    <div id="lastCall" class="valign-wrapper"></div>
-                </div>
-                <div class="col s12 m6">
-                    <h3 id="callNumber">Current Call</h3>
-                    <div id="currentCall" class="valign-wrapper"></div>
-                </div>
-            </div>
+        <div class="col s12 m6 right-align">
+            <div class="addthis_inline_share_toolbox"></div>
         </div>
+    </div>
+    <div class="row">
         <div class="col s12">
-            <div id="buttons"></div>
+            <p class="description">Use this free bingo caller to host your own bingo games at home! You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!</p>
         </div>
     </div>
 </header>
+
 <section>
     <div class="row">
         <div class="col s12">
             <div class="center-align grey darken-4 grey-text text-darken-2" id="bingoboard"></div>
         </div>
     </div>
+</section>
+
+<section>
     <div class="row">
-        <div class="col s12">
+        <div class="col s12 m3">
+            <h3 id="callNumber">Current Call</h3>
+            <div id="currentCall" class="valign-wrapper"></div>
+        </div>
+
+        <div class="col s12 m6">
+            <div id="buttons"></div>
             <div id="voices"></div>
+        </div>
+
+        <div class="col s12 m3">
+            <h3>Last Call</h3>
+            <div id="lastCall" class="valign-wrapper"></div>
         </div>
     </div>
 </section>
 
 <footer>
     <div class="row">
-        <div class="col s12 right-align">
+        <div class="col s6 left-align">
+        </div>
+        <div class="col s6 right-align">
             <p>Let's Play Bingo! &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://karolbrennan.com" class="red-text">Karol Brennan</a> | Check out this project on <a href="http://github.com/codemasterkarol/bingocaller">GitHub</a>!</p>
         </div>
     </div>
@@ -85,14 +95,13 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
     ga('create', 'UA-89776307-5', 'auto');
     ga('send', 'pageview');
-
 </script>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-586d4324ccbaf284"></script>
+
 </body>
 </html>

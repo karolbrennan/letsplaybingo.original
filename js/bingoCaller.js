@@ -110,6 +110,10 @@ var Bingo = function(bingoBoardElement, speechInstance) {
         startGameButton.setAttribute('id', 'startGame');
         startGameButton.addEventListener('click', startGameListener);
 
+        resetGameButton = helper.createDomElement('a', 'btn red waves-effect disabled', 'Reset Board');
+        resetGameButton.setAttribute('id', 'resetGame');
+        resetGameButton.addEventListener('click', resetGameListener);
+
         pauseGameButton = helper.createDomElement('a', 'btn orange waves-effect disabled', 'Pause Game');
         pauseGameButton.setAttribute('id', 'pauseGame');
         pauseGameButton.addEventListener('click', pauseGameListener);
@@ -118,11 +122,7 @@ var Bingo = function(bingoBoardElement, speechInstance) {
         resumeGameButton.setAttribute('id', 'resumeGame');
         resumeGameButton.addEventListener('click', resumeGameListener);
 
-        resetGameButton = helper.createDomElement('a', 'btn red waves-effect disabled', 'Reset Board');
-        resetGameButton.setAttribute('id', 'resetGame');
-        resetGameButton.addEventListener('click', resetGameListener);
-
-        var buttons = [ startGameButton, pauseGameButton, resumeGameButton, resetGameButton ];
+        var buttons = [ startGameButton, resetGameButton, pauseGameButton, resumeGameButton ];
 
         for (var i = 0; i < buttons.length; i++) {
             document.getElementById('buttons').appendChild(buttons[i]);
@@ -134,11 +134,16 @@ var Bingo = function(bingoBoardElement, speechInstance) {
      */
     function startGameListener(){
         speechInstance.say("Let's play bingo!");
+
         pauseGameButton.classList.remove('disabled');
         resetGameButton.classList.remove('disabled');
         this.classList.add('disabled');
-        // call the first number right away
-        callBingoBall();
+
+        setTimeout(function(){
+            // call the first number right away
+            callBingoBall();
+        }, 2000);
+
         // set up interval for future calls
         ballCallingInterval = setInterval(callBingoBall, ballCallingDelay);
     }
@@ -312,43 +317,53 @@ var Speech = function() {
         if ('speechSynthesis' in window) {
             speechEnabled = true;
             this.say("");
-            // wait for the voices to load before continuing
-            window.speechSynthesis.onvoiceschanged = function() {
-                var voiceList = window.speechSynthesis.getVoices();
-                var englishVoices = [];
 
-                // populate the list of voices
-                voicesDiv.innerHTML = "<h4>Choose Your Bingo Caller!</h4>";
-
-                // populate the array of english voices
-                for (var i = 0; i < voiceList.length; i++) {
-                    if (voiceList[i].lang.substring(0, 2) === 'en' && voiceList[i].name.substring(0, 6) !== 'Google') {
-                        englishVoices.push(voiceList[i]);
-                    }
+            var voices = window.speechSynthesis.getVoices();
+            if(window.navigator.userAgent.toLowerCase().indexOf("chrome") == -1) {
+                loadVoices();
+            } else {
+                console.log("It's Chrome");
+                // wait for voices to load
+                window.speechSynthesis.onvoiceschanged = function() {
+                    loadVoices();
                 }
-
-                // set default voice object to a random one on load
-                speechInstance.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
-
-                for (var a = 0; a < englishVoices.length; a++) {
-                        var classes = 'voice cyan lighten-1 btn waves-effect ';
-                        if(speechInstance.voice === englishVoices[a]){
-                            classes += ' disabled ';
-                        }
-                        var button = helper.createDomElement('a', classes, englishVoices[a].name);
-                        button.setAttribute('data-voice', englishVoices[a].name);
-                        button.addEventListener('click', function(){
-                            setVoice(this, englishVoices);
-                        });
-                        voicesDiv.appendChild(button);
-                    }
-                };
+            }
         // if speech synthesis is not supported, display an error
         // and a link to a supported browser
         } else {
             speechEnabled = false;
             voicesDiv.innerHTML = "Sorry, your browser does not support our voice caller. Please download <a href='https://www.google.com/chrome/browser/canary.html'>Google Chrome</a> for the best bingo experience we have to offer!";
             voicesDiv.classList.add('error');
+        }
+
+        function loadVoices() {
+            var voiceList = window.speechSynthesis.getVoices();
+            var englishVoices = [];
+
+            // populate the array of english voices
+            for (var i = 0; i < voiceList.length; i++) {
+                if (voiceList[i].lang.substring(0, 2) === 'en' && voiceList[i].name.substring(0, 6) !== 'Google') {
+                    if(voiceList[i].voiceURI.substr(voiceList[i].voiceURI.length-7) !== 'premium') {
+                        englishVoices.push(voiceList[i]);
+                    }
+                }
+            }
+
+            // set default voice object to a random one on load
+            speechInstance.voice = englishVoices[Math.floor(Math.random() * englishVoices.length)];
+
+            for (var a = 0; a < englishVoices.length; a++) {
+                var classes = 'voice cyan lighten-1 btn waves-effect ';
+                if(speechInstance.voice === englishVoices[a]){
+                    classes += ' disabled ';
+                }
+                var button = helper.createDomElement('a', classes, englishVoices[a].name);
+                button.setAttribute('data-voice', englishVoices[a].name);
+                button.addEventListener('click', function(){
+                    setVoice(this, englishVoices);
+                });
+                voicesDiv.appendChild(button);
+            }
         }
     };
 
