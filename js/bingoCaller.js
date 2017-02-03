@@ -201,8 +201,10 @@ var Bingo = function(bingoBoardElement, speechInstance) {
         if(bingoInstance.calledBingoNumbers.length === 75){
             clearInterval(ballCallingInterval);
         } else {
-            // cancel any current speech
-            window.speechSynthesis.cancel();
+            if ('speechSynthesis' in window) {
+                // cancel any current speech
+                window.speechSynthesis.cancel();
+            }
             // get variables for last call and current call elements
             var lastCall = document.getElementById('lastCall');
             var currentCall = document.getElementById('currentCall');
