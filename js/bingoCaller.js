@@ -2,6 +2,7 @@
 /**
  * Main Bingo Class
  * @param bingoBoardElement
+ * @param speechInstance
  * @constructor
  */
 var Bingo = function(bingoBoardElement, speechInstance) {
@@ -10,51 +11,43 @@ var Bingo = function(bingoBoardElement, speechInstance) {
      * @type {[*]}
      */
     var bingoLetters = ["B", "I", "N", "G", "O"];
+
     /**
      * Array to hold all of the potential bingo numbers
      * @type {Array}
      */
     var allBingoNumbers = [];
+
     /**
      * Array to hold called bingo numbers
      * @type {Array}
      */
     this.calledBingoNumbers = [];
-    /**
-     * Delay between ball calls
-     * @todo make this selectable by users
-     * @type {number}
-     */
-    var ballCallingDelay = 8000;
-    /**
-     * Interval for calling bingo balls
-     */
-    var ballCallingInterval = setInterval(null, ballCallingDelay);
 
     /**
-     * Button Variables
-     * @type {Element}
+     * Interval for calling balls
+     * @type {number}
      */
-    var startGameButton,
-        pauseGameButton,
-        resumeGameButton,
-        resetGameButton;
+    var ballCallingInterval = window.setInterval(null, parseInt(document.getElementById('range').value) * 1000);
+
+    /**
+     * States whether a game has started or not
+     * @type {boolean}
+     */
+    var hasGameStarted = false;
 
     /**
      * Run the bingo process
      */
     this.run = function() {
-
         /**
          * Initialize the bingo board
          */
         generateBingoBoard();
-
         /**
-         * Generate Buttons
+         * Add event listeners to buttons
          */
-        generateButtons();
-
+        addEventListeners();
         /**
          * Initialize speech synthesis
          */
@@ -70,107 +63,90 @@ var Bingo = function(bingoBoardElement, speechInstance) {
          * @type {number}
          */
         var currentBingoBall = 1;
-
-        // Loop through the bingo letters, creating dom elements as needed
-        // then appending those elements. Then add the bingo numbers
+        // Loop through the bingo letters, creating dom elements as needed - then append elements and bingo numbers
         for(var i = 0; i < bingoLetters.length; i++){
             var letterBlock = helper.createDomElement('div', 'letter-block valign-wrapper ');
             var bingoLetter = helper.createDomElement('div', 'letter valign red darken-1 white-text ', bingoLetters[i]);
             letterBlock.appendChild(bingoLetter);
             bingoBoardElement.appendChild(letterBlock);
             // get back the current ball we left off at for generating the next block
-            currentBingoBall = add15Balls(currentBingoBall, letterBlock, bingoLetters[i]);
+            currentBingoBall = add15Balls(allBingoNumbers, currentBingoBall, letterBlock, bingoLetters[i]);
         }
     }
-
     /**
      * Generate numbers for populating the bingo board
+     * @param allBingoNumbers
      * @param currentBingoBall
      * @param letterBlock
      * @param letter
      * @returns {*}
      */
-    function add15Balls(currentBingoBall, letterBlock, letter) {
+    function add15Balls(allBingoNumbers, currentBingoBall, letterBlock, letter) {
         var totalBingoBalls = currentBingoBall + 15;
         for (currentBingoBall; currentBingoBall < totalBingoBalls; currentBingoBall++) {
             var newBingoBall = helper.createDomElement('div', 'ball valign ' + letter + currentBingoBall);
             newBingoBall.appendChild(document.createTextNode(currentBingoBall));
+            newBingoBall.setAttribute('id', letter + currentBingoBall);
             letterBlock.appendChild(newBingoBall);
             allBingoNumbers.push(letter + currentBingoBall);
         }
         return currentBingoBall;
     }
 
-
     /**
-     * Generate the buttons that control the game / board
+     * Add event listeners to buttons
      */
-    function generateButtons () {
-        startGameButton = helper.createDomElement('a', 'btn green waves-effect ', 'Start Game');
-        startGameButton.setAttribute('id', 'startGame');
-        startGameButton.addEventListener('click', startGameListener);
-
-        resetGameButton = helper.createDomElement('a', 'btn red waves-effect disabled', 'Reset Board');
-        resetGameButton.setAttribute('id', 'resetGame');
-        resetGameButton.addEventListener('click', resetGameListener);
-
-        pauseGameButton = helper.createDomElement('a', 'btn orange waves-effect disabled', 'Pause Game');
-        pauseGameButton.setAttribute('id', 'pauseGame');
-        pauseGameButton.addEventListener('click', pauseGameListener);
-
-        resumeGameButton = helper.createDomElement('a', 'btn cyan waves-effect disabled', 'Resume Game');
-        resumeGameButton.setAttribute('id', 'resumeGame');
-        resumeGameButton.addEventListener('click', resumeGameListener);
-
-        var buttons = [ startGameButton, resetGameButton, pauseGameButton, resumeGameButton ];
-
-        for (var i = 0; i < buttons.length; i++) {
-            document.getElementById('buttons').appendChild(buttons[i]);
-        }
+    function addEventListeners () {
+        console.log('hot diggity damn');
+        document.getElementById('startGame').addEventListener('click', startGameListener);
+        document.getElementById('resetGame').addEventListener('click', resetGameListener);
+        document.getElementById('pauseGame').addEventListener('click', pauseGameListener);
+        document.getElementById('resumeGame').addEventListener('click', resumeGameListener);
+        document.getElementById('range').addEventListener('change', changeDelayListener);
+        document.getElementById("nextBall").addEventListener('click', callBingoBall);
     }
-
     /**
-     *  Start Game
+     *  Start Game Listener
      */
     function startGameListener(){
+        hasGameStarted = true;
         speechInstance.say("Let's play bingo!");
-
-        pauseGameButton.classList.remove('disabled');
-        resetGameButton.classList.remove('disabled');
         this.classList.add('disabled');
+        document.getElementById('pauseGame').classList.remove('disabled');
+        document.getElementById('resetGame').classList.remove('disabled');
 
-        setTimeout(function(){
-            // call the first number right away
-            callBingoBall();
-        }, 2000);
-
-        // set up interval for future calls
-        ballCallingInterval = setInterval(callBingoBall, ballCallingDelay);
+        callBingoBall();
+        ballCallingInterval = window.setInterval(callBingoBall, (parseInt(document.getElementById('range').value) * 1000));
     }
 
     /**
-     * Pause Game
+     * Pause Game Listener
      */
     function pauseGameListener(){
-        resumeGameButton.classList.remove('disabled');
-        this.classList.add('disabled');
         clearInterval(ballCallingInterval);
+        document.getElementById('resumeGame').classList.remove('disabled');
+        document.getElementById('nextBall').classList.remove('disabled');
+        this.classList.add('disabled');
     }
 
     /**
-     * Resume Game
+     * Resume Game Listener
      */
     function resumeGameListener(){
-        pauseGameButton.classList.remove('disabled');
+        document.getElementById('pauseGame').classList.remove('disabled');
+        document.getElementById('nextBall').classList.add('disabled');
         this.classList.add('disabled');
-        // call the first number right away
+        // if currently set to manual, change to the next value then continue calling
+        if(parseInt(document.getElementById('range').value) === 16) {
+            document.getElementById('range').value = 15;
+        }
         callBingoBall();
-        // set up interval for future calls
-        ballCallingInterval = setInterval(callBingoBall, ballCallingDelay);
+        clearInterval(ballCallingInterval);
+        ballCallingInterval = window.setInterval(callBingoBall, parseInt(document.getElementById('range').value) * 1000);
     }
 
     /**
-     * Reset Game
+     * Reset Game Listener
      */
     function resetGameListener(){
         // cancel any current speech
@@ -179,65 +155,71 @@ var Bingo = function(bingoBoardElement, speechInstance) {
         clearInterval(ballCallingInterval);
         // reset the called bingo numbers
         bingoInstance.calledBingoNumbers = [];
-        // remove buttons
-        document.getElementById('buttons').innerHTML = '';
+        // reset the array of all bingo numbers
+        allBingoNumbers = [];
         // clear bingo board
         bingoBoardElement.innerHTML = '';
         // reset inner HTML for ball
-        document.getElementById('callNumber').innerHTML = "Current Call";
-        // clear the last/current calls
-        document.getElementById('lastCall').innerHTML = '';
-        document.getElementById('currentCall').innerHTML = '';
+        document.getElementById('callNumber').innerHTML = "";
+        // clear the current ball
+        document.getElementById('ballText').innerHTML = '';
+        document.getElementById('ballGraphic').className = '';
+        document.getElementById('startGame').classList.remove('disabled');
+        document.getElementById('pauseGame').classList.add('disabled');
+        document.getElementById('resumeGame').classList.add('disabled');
+        document.getElementById('nextBall').classList.add('disabled');
+        this.classList.add('disabled');
         // regenerate bingo board
         generateBingoBoard();
-        generateButtons();
     }
 
     /**
-     * Private function for calling bingo balls
+     * Event listener for delay slider
+     */
+    function changeDelayListener() {
+        if(hasGameStarted) {
+            var delayValue = parseInt(document.getElementById('range').value);
+            if (delayValue === 16) {
+                document.getElementById('nextBall').classList.remove('disabled');
+                document.getElementById('resumeGame').classList.remove('disabled');
+                document.getElementById('pauseGame').classList.add('disabled');
+                clearInterval(ballCallingInterval);
+            } else {
+                document.getElementById('nextBall').classList.add('disabled');
+                clearInterval(ballCallingInterval);
+                ballCallingInterval = window.setInterval(callBingoBall, parseInt(document.getElementById('range').value) * 1000);
+            }
+        } else {
+            console.log("game hasn't started");
+        }
+    }
+
+    /**
+     * Function for calling bingo balls
      */
     function callBingoBall() {
         // if we have already called all possible numbers, quit.
         if(bingoInstance.calledBingoNumbers.length === 75){
-            clearInterval(ballCallingInterval);
+            window.clearInterval(ballCallingInterval);
         } else {
             if ('speechSynthesis' in window) {
                 // cancel any current speech
                 window.speechSynthesis.cancel();
             }
-            // get variables for last call and current call elements
-            var lastCall = document.getElementById('lastCall');
-            var currentCall = document.getElementById('currentCall');
-            var callNumber = document.getElementById('callNumber');
 
-            // get any current elements on the board
-            var currentBallOnBoard = document.getElementsByClassName("current");
-
-            if(currentBallOnBoard){
-                // if there is a ball on board that is marked as current, change it to called
-                for (var i = 0; i < currentBallOnBoard.length; i++){
-                    currentBallOnBoard[i].classList.add("called");
-                    currentBallOnBoard[i].classList.remove("current");
-                }
-            }
-
-            // get current call ball if it exists
-            var existingBall = document.getElementById('newBall');
-
-            if(existingBall){
-                // if current call ball exists, move to last ball space
-                existingBall.setAttribute('id', 'lastBall');
-                lastCall.innerHTML = '';
-                lastCall.appendChild(existingBall);
-            }
-
-            // generate a new ball out of the remaining bingo numbers
-            var newBall = allBingoNumbers[Math.floor(Math.random() * allBingoNumbers.length)];
-
-            var split = newBall.split("");
+            // set elements for displaying the current ball as variables
+            var lastBallCalled = document.getElementById('ballText').innerHTML.replace('<br>',''),
+                ballGraphicElement = document.getElementById('ballGraphic'),
+                ballTextElement = document.getElementById('ballText'),
+                // generate a new ball number
+                newBallNumber = allBingoNumbers[Math.floor(Math.random() * allBingoNumbers.length)],
+                // split the numbers for reading aloud
+                split = newBallNumber.split(""),
+                // generate ball text for appending to ball text element
+                ballText = split[0] + "<br>" + split[1] + (split[2] ? split[2] : '');
 
             // if speech is enabled, call the numbers aloud
-            speechInstance.say(newBall);
+            speechInstance.say(newBallNumber);
             for (var a = 0; a < split.length; a++) {
                 speechInstance.say(split[a].toLowerCase());
             }
@@ -262,32 +244,32 @@ var Bingo = function(bingoBoardElement, speechInstance) {
                     break;
             }
 
+            // set classes for the ball graphic elements
+            ballGraphicElement.className = "valign-wrapper " + color;
+            ballTextElement.className = "valign center-align " + (split[2] ? newBallNumber : 'single ' + newBallNumber);
+            // Change ball text for the ball text element
+            ballTextElement.innerHTML = ballText;
 
-            // create the new ball element that will display in the current call box
-            var newBallElement = helper.createDomElement('div', color + ' valign-wrapper');
-            newBallElement.setAttribute('id', 'newBall');
-            currentCall.appendChild(newBallElement);
-            var splitBallText = split[0] + "<br>" + split[1] + (split[2] ? split[2] : '');
-            // generate ball text. If single digit number add a class for that (for padding purposes)
-            var newBallText = helper.createDomElement('div', 'ballText valign center-align ' + (split[2] ? '' : 'single '), splitBallText);
-            newBallElement.appendChild(newBallText);
+            // if there's a number called on the board, grab that element so we can change classes
+            var lastCallOnBoard = document.getElementsByClassName('lastCall');
+            if(lastCallOnBoard.length > 0){
+                lastCallOnBoard[0].classList.add('called');
+                lastCallOnBoard[0].classList.remove('lastCall');
+            }
+            // if not the first ball called, add last call to the most recent called ball
+            if(lastBallCalled){
+                document.getElementById(lastBallCalled).classList.add('lastCall');
+            }
 
             // get the index of the new ball in all bingo numbers
-            var index = allBingoNumbers.indexOf(newBall);
+            var index = allBingoNumbers.indexOf(newBallNumber);
             // remove the called number from the list of bingo numbers
             allBingoNumbers.splice(index,1);
             // add the called number to the list of called bingo numbers
-            bingoInstance.calledBingoNumbers.push(newBall);
-
-            // get the current ball on the board and add the current class for blinking display
-            var current = document.getElementsByClassName(newBall);
-            for(var b = 0; b < current.length; b++){
-                current[b].classList.add("current");
-            }
+            bingoInstance.calledBingoNumbers.push(newBallNumber);
 
             // keep track of number of balls called.
-            var ballCount = bingoInstance.calledBingoNumbers.length;
-            callNumber.innerHTML = "Current Call / <span>Ball # " + ballCount.toString() + "</span>";
+            document.getElementById('callNumber').innerHTML = "Ball #" + bingoInstance.calledBingoNumbers.length.toString() + "</span>";
         }
     }
 };
@@ -340,6 +322,7 @@ var Speech = function() {
         function loadVoices() {
             var voiceList = window.speechSynthesis.getVoices();
             var englishVoices = [];
+            voicesDiv.innerHTML = "<h4>Choose Your Caller:</h4>";
 
             // populate the array of english voices
             for (var i = 0; i < voiceList.length; i++) {
@@ -428,16 +411,12 @@ var helper = {
      * @returns {Element}
      */
     createDomElement: function(type, classes, content){
-
         var element = document.createElement(type);
-
         element.className = typeof classes !== 'undefined' || classes == '' ? classes : '';
         element.innerHTML = typeof content !== 'undefined' || content == '' ? content : '';
-
         return element;
     }
 };
-
 
 /**
  * Define the bingo board element

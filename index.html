@@ -13,21 +13,21 @@
     <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="apple-touch-icon" sizes="57x57" href="icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png">
 
-    <link rel="manifest" href="icons/manifest.json">
+    <link rel="manifest" href="/images/icons/manifest.json">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="css/main.css">
@@ -37,16 +37,35 @@
 
 <header>
     <div class="row">
-        <div class="col s12 m6">
-            <h1>Let's Play Bingo!</h1>
+        <div class="col s12 m9">
+            <div class="row">
+                <div class="col s12 m6">
+                    <h1>Let's Play Bingo!</h1>
+                </div>
+                <div class="col s12 m6 right-align">
+                    <div class="addthis_inline_share_toolbox"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <p class="description">Use this free bingo caller to host your own bingo games at home!<br>You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div id="buttons">
+                        <a class="btn green waves-effect " id="startGame">Start Game</a>
+                        <a class="btn orange waves-effect disabled" id="pauseGame"><i class="material-icons">pause</i></a>
+                        <a class="btn cyan waves-effect disabled" id="resumeGame"><i class="material-icons">play_arrow</i></a>
+                        <a class="btn cyan waves-effect disabled" id="nextBall">Next Ball</a>
+                        <a class="btn red waves-effect disabled" id="resetGame">Reset Board</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col s12 m6 right-align">
-            <div class="addthis_inline_share_toolbox"></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s12">
-            <p class="description">Use this free bingo caller to host your own bingo games at home! You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!</p>
+        <div class="col s12 m3">
+            <h3>Current Call</h3>
+            <div id="currentBall" class="valign-wrapper"><div id="ballGraphic"><span id="ballText"></span></div><span id="callNumber"></span></div>
         </div>
     </div>
 </header>
@@ -61,19 +80,19 @@
 
 <section>
     <div class="row">
-        <div class="col s12 m3">
-            <h3 id="callNumber">Current Call</h3>
-            <div id="currentCall" class="valign-wrapper"></div>
-        </div>
-
         <div class="col s12 m6">
-            <div id="buttons"></div>
-            <div id="voices"></div>
+            <div id="delayrange">
+                <i class="icon slow"><img src="/images/icons/man-with-cane.svg" alt="slower"></i>
+                <form action="#">
+                    <p class="range-field">
+                        <input type="range" id="range" min="5" max="16" value="10">
+                    </p>
+                </form>
+                <i class="icon fast"><img src="/images/icons/runner.svg" alt="faster"></i>
+            </div>
         </div>
-
-        <div class="col s12 m3">
-            <h3>Last Call</h3>
-            <div id="lastCall" class="valign-wrapper"></div>
+        <div class="col s12 m6">
+            <div id="voices"></div>
         </div>
     </div>
 </section>

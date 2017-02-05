@@ -4,23 +4,42 @@ html, body, p, .btn { font-size: 1rem; }
 h1 { font-size: 2.5rem; margin: 0; font-weight: bold; text-transform: uppercase; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1rem; margin: 0; padding: 0.5em; text-align: center; background: #3d3d3d; color: #fff; }
-h4 { font-size: 1rem; margin: 0.75em 1em; float: left; }
+h4 { font-size: 1rem; margin: 0; }
 #callNumber span { font-weight: bold; }
 #voices .btn {
     font-size: 0.7rem;
     padding: 0.5em 1em;
     line-height: 1.5;
     height: auto;
+    margin: 0 0.5rem 0 0;
 }
 .error {
     color: red;
     font-size: 0.9rem;
 }
-.description {
-    margin: 0.5rem 0 0;
-    text-align: center;
-    font-style: italic;
-    font-size: 0.9rem;
+.icon {
+    margin: 1.25rem 1%;
+}
+.icon img {
+    height: 4rem;
+    max-width: 100%;
+}
+#delayrange form {
+    width: 67%;
+    margin-right: 2%;
+}
+#delayrange i, #delayrange form {
+    display: inline-block;
+    vertical-align: middle;
+}
+#range {
+    direction: rtl;
+}
+input[type=range]+.thumb {
+    background-color: #26c6da;
+}
+input[type=range]+.thumb.active .value {
+    font-size: 14px;
 }
 
 /* Spacing */
@@ -46,26 +65,24 @@ footer { padding: 1rem 1.5rem 0.5rem; }
 
 /* Buttons */
 #buttons a {
-    width: 48%;
     margin: 0 1% 2%;
     font-weight: bold;
 }
 
 /* Sizing */
 #bingoboard { width: 100%; }
-.letter, .ball { width: 6.25%; }
-
+.letter, .ball { width: 6.25%; padding: 0.5rem; }
 
 /* Bingo Board */
 .ball {
     transition: all ease 1s;
     -webkit-transition: all ease 1s;
 }
-.called, .current {
+.called, .lastCall {
     font-weight: bold;
     color: #fff;
 }
-.current {
+.lastCall {
     animation: blink 2.5s infinite;
     -webkit-animation: blink 2.5s infinite;
 }
@@ -76,65 +93,87 @@ footer { padding: 1rem 1.5rem 0.5rem; }
 }
 
 /* Balls */
-#lastBall, #newBall, .ballText {
-    font-size: 1rem;
-    line-height: 1;
-    padding: 1em 1.5em;
+#ballGraphic, #ballText {
+    padding: 0.8em 1.3em;
     margin: 0.5em auto;
     border-radius: 100%;
+}
+#ballText {
+    line-height: 1;
+    padding: 0.5em 1em;
     font-weight: bold;
 }
-#lastCall, #currentCall {
+#currentBall {
     background: #ececec;
-    min-height: 10rem;
-    margin-bottom: 2rem;
+    min-height: 12rem;
+    position: relative;
 }
-.ballText {
+#ballText:not(:empty) {
     border: 1px solid red;
     box-shadow: inset -0.5rem -0.5rem 2rem 0 rgba(0, 0, 0, 0.16), 0 0 0 0.25rem white;
     background: radial-gradient(circle at 20% 20%, white, #efefef);
 }
-.ballText.single {
-    padding: 1em 1.7em;
+#ballText.single {
+    padding: 0.5em 1.2em;
 }
-#lastBall:empty, #newBall:empty {
-    display: none;
-}
-#callNumber span {
-    color: orange;
+#callNumber:not(:empty) {
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+    background: white;
+    color: #444;
+    font-size: 1rem;
     font-weight: normal;
+    padding: 0.5em;
+}
+#ballGraphic.blue, #ballGraphic.red, #ballGraphic.white, #ballGraphic.green, #ballGraphic.orange {
+    margin-top: -0.5rem;
+    position: relative;
+    box-shadow: inset 0.5rem 0.5rem 1.5rem 0.25rem rgba(255,255,255,0.3), inset -0.25rem -0.25rem 1.5rem 0.5rem rgba(0,0,0,0.4);
 }
 
+#ballGraphic.blue:after, #ballGraphic.red:after,
+#ballGraphic.white:after, #ballGraphic.green:after, #ballGraphic.orange:after {
+    content: '';
+    background: radial-gradient(circle at 50% -150%, rgba(0,0,0,0.4), transparent);
+    height: 0.75rem;
+    position: absolute;
+    bottom: -1rem;
+    width: 70%;
+    left: 17%;
+    border-radius: 100%;
+    margin: 0 auto;
+}
 /* Ball Colors */
-#newBall.blue, #lastBall.blue {
-    background: radial-gradient(circle at 20% 20%, blue, #000062);
+#ballGraphic.blue {
+    background: radial-gradient(circle at 20% 20%, #0000FF, #0000ad);
 }
-#newBall.blue .ballText, #lastBall.blue .ballText {
-    border: 0.15rem solid blue;
+#ballGraphic.blue #ballText {
+    border: 0.15rem solid #0000FF;
 }
-#newBall.red, #lastBall.red {
-    background: radial-gradient(circle at 20% 20%, red, #9e0000);
+#ballGraphic.red {
+    background: radial-gradient(circle at 20% 20%, #FF0000, #910000);
 }
-#newBall.red .ballText, #lastBall.red .ballText {
-    border: 0.15rem solid red;
+#ballGraphic.red #ballText {
+    border: 0.15rem solid #FF0000;
 }
-#newBall.white, #lastBall.white {
-    background: radial-gradient(circle at 20% 20%, white, #b6b6b6);
+#ballGraphic.white {
+    background: radial-gradient(circle at 20% 20%, #ffffff, #b6b6b6);
 }
-#newBall.white .ballText, #lastBall.white .ballText {
-    border: 0.15rem solid red;
+#ballGraphic.white #ballText {
+    border: 0.15rem solid #FF0000;
 }
-#newBall.green, #lastBall.green {
-    background: radial-gradient(circle at 20% 20%, green, #004800);
+#ballGraphic.green {
+    background: radial-gradient(circle at 20% 20%, #008000, #004a00);
 }
-#newBall.green .ballText, #lastBall.green .ballText {
-    border: 0.15rem solid green;
+#ballGraphic.green #ballText {
+    border: 0.15rem solid #008000;
 }
-#newBall.orange, #lastBall.orange {
-    background: radial-gradient(circle at 20% 20%, orange, #af7900);
+#ballGraphic.orange {
+    background: radial-gradient(circle at 20% 20%, #FFA500, #9c6400);
 }
-#newBall.orange .ballText, #lastBall.orange .ballText {
-    border: 0.15rem solid orange;
+#ballGraphic.orange #ballText {
+    border: 0.15rem solid #FFA500;
 }
 
 /* Footer */
