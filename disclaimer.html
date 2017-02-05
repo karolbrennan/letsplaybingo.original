@@ -37,35 +37,12 @@
 
 <header>
     <div class="row">
-        <div class="col s12 m9">
-            <div class="row">
-                <div class="col s12 m6">
-                    <h1>Let's Play Bingo!</h1>
-                </div>
-                <div class="col s12 m6 right-align">
-                    <div class="addthis_inline_share_toolbox"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <p class="description">Use this free bingo caller to host your own bingo games at home!<br>You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <div id="buttons">
-                        <a class="btn green waves-effect " id="startGame">Start Game</a>
-                        <a class="btn orange waves-effect disabled" id="pauseGame"><i class="material-icons">pause</i></a>
-                        <a class="btn cyan waves-effect disabled" id="resumeGame"><i class="material-icons">play_arrow</i></a>
-                        <a class="btn cyan waves-effect disabled" id="nextBall">Next Ball</a>
-                        <a class="btn red waves-effect disabled" id="resetGame">Reset Board</a>
-                    </div>
-                </div>
-            </div>
+        <div class="col s12 m6">
+            <h1>Let's Play Bingo!</h1>
+            <p class="description">Use this free bingo caller to host your own bingo games at home!<br>You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!</p>
         </div>
-        <div class="col s12 m3">
-            <h3>Current Call</h3>
-            <div id="currentBall" class="valign-wrapper"><div id="ballGraphic"><span id="ballText"></span></div><span id="callNumber"></span></div>
+        <div class="col s12 m6 right-align">
+            <div class="addthis_inline_share_toolbox"></div>
         </div>
     </div>
 </header>
@@ -73,26 +50,11 @@
 <section>
     <div class="row">
         <div class="col s12">
-            <div class="center-align grey darken-4 grey-text text-darken-2" id="bingoboard"></div>
-        </div>
-    </div>
-</section>
-
-<section>
-    <div class="row">
-        <div class="col s12 m6">
-            <div id="delayrange">
-                <i class="icon slow"><img src="/images/icons/man-with-cane.svg" alt="slower"></i>
-                <form action="#">
-                    <p class="range-field">
-                        <input type="range" id="range" min="5" max="16" value="10">
-                    </p>
-                </form>
-                <i class="icon fast"><img src="/images/icons/runner.svg" alt="faster"></i>
-            </div>
-        </div>
-        <div class="col s12 m6">
-            <div id="voices"></div>
+            <h2>Disclaimer</h2>
+            <p><strong>LetsPlayBingo.io</strong> does not intend for the bingo caller or bingo cards contained on this website to be used for illegal or gambling purposes.</p>
+            <p>The information and bingo caller contained on this website is for entertainment purposes only.</p>
+            <p>This website, its owners and associates do not have any control over the use of this bingo caller and cannot be held liable for any monetary or other losses incurred by unapproved use of this bingo caller or generated bingo cards.</p>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Let's Play Bingo! All rights reserved.</p>
         </div>
     </div>
 </section>
@@ -107,17 +69,6 @@
         </div>
     </div>
 </footer>
-
-<script src="js/bingoCaller.js"></script>
-
-<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    ga('create', 'UA-89776307-5', 'auto');
-    ga('send', 'pageview');
-</script>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
