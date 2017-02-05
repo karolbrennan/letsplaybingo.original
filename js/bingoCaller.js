@@ -97,7 +97,6 @@ var Bingo = function(bingoBoardElement, speechInstance) {
      * Add event listeners to buttons
      */
     function addEventListeners () {
-        console.log('hot diggity damn');
         document.getElementById('startGame').addEventListener('click', startGameListener);
         document.getElementById('resetGame').addEventListener('click', resetGameListener);
         document.getElementById('pauseGame').addEventListener('click', pauseGameListener);
