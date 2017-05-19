@@ -21,5 +21,6 @@ This project is built on the back of my own custom [Vagrant Box](https://github.
 - JavaScript
 
 ### Frameworks / Libraries Used
-- Materialize CSS
+- [Materialize CSS](http://materializecss.com)
+- [Material.io Icon Font](https://material.io/icons/)
 - Web Speech Synthesis API (this is an experimental technology)
