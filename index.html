@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
+<html lang="en">
 <head>
     <title>Let's Play Bingo! | Free Online Bingo Caller</title>
 
@@ -8,10 +8,16 @@
     <meta name="keywords" content="bingo, free online bingo caller, free bingo caller, bingo caller, host your own bingo games, bingo games at home, free bingo app no downloads">
     <meta name="author" content="Karol Brennan">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="icons/ogimage.png" />
+    <meta property="og:image" content="http://letsplaybingo.io/images/icons/ogimage.png" />
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="http://letsplaybingo.io/images/icons/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@codemasterkarol" />
+    <meta name="twitter:title" content="Let's Play Bingo!" />
+    <meta name="twitter:description" content="Free Online Bingo Caller: use this bingo caller to host your own bingo games at home! You provide the cards, we generate the bingo numbers! Completely free bingo app - no downloads necessary!" />
+    <meta name="twitter:image" content="http://letsplaybingo.io/images/icons/ogimage.png" /><meta name="twitter:image:alt" content="Let's Play Bingo Site Preview" />
 
     <link rel="apple-touch-icon" sizes="57x57" href="/images/icons/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/images/icons/apple-icon-60x60.png">
@@ -29,7 +35,7 @@
 
     <link rel="manifest" href="/images/icons/manifest.json">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
@@ -70,32 +76,28 @@
     </div>
 </header>
 
-<section>
     <div class="row">
         <div class="col s12">
             <div class="center-align grey darken-4 grey-text text-darken-2" id="bingoboard"></div>
         </div>
     </div>
-</section>
 
-<section>
     <div class="row">
         <div class="col s12 m6">
             <div id="delayrange">
-                <i class="icon slow"><img src="/images/icons/man-with-cane.svg" alt="slower"></i>
+                <i class="material-icons">timer_off</i>
                 <form action="#">
                     <p class="range-field">
                         <input type="range" id="range" min="5" max="16" value="10">
                     </p>
                 </form>
-                <i class="icon fast"><img src="/images/icons/runner.svg" alt="faster"></i>
+                <i class="material-icons">timer</i>
             </div>
         </div>
         <div class="col s12 m6">
             <div id="voices"></div>
         </div>
     </div>
-</section>
 
 <footer>
     <div class="row">

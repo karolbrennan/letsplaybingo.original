@@ -321,7 +321,7 @@ var Speech = function() {
         function loadVoices() {
             var voiceList = window.speechSynthesis.getVoices();
             var englishVoices = [];
-            voicesDiv.innerHTML = "<h4>Choose Your Caller:</h4>";
+            voicesDiv.innerHTML = "<i class='material-icons'>record_voice_over</i>";
 
             // populate the array of english voices
             for (var i = 0; i < voiceList.length; i++) {

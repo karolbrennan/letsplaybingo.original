@@ -10,12 +10,19 @@ header img {
     max-width: 12rem;
     height: auto;
 }
+#voices {
+    text-align: right;
+}
 #voices .btn {
     font-size: 0.7rem;
     padding: 0.5em 1em;
     line-height: 1.5;
     height: auto;
     margin: 0 0.5rem 0 0;
+}
+#voices i {
+    vertical-align: middle;
+    margin-right: 1rem;
 }
 .error {
     color: red;
@@ -36,6 +43,9 @@ header img {
     display: inline-block;
     vertical-align: middle;
 }
+#delayrange i {
+    margin: 0.5em 0.5em 0 0;
+}
 #range {
     direction: rtl;
 }
@@ -53,7 +63,7 @@ header { padding: 2rem 1.5rem 0; }
 header .row:not(:last-of-type) {
     margin-bottom: 0;
 }
-section { padding: 0 1.5rem; }
+section, .board { padding: 0 1.5rem; }
 footer { padding: 1rem 1.5rem 0.5rem; }
 .addthis_inline_share_toolbox {
     clear: none !important;
