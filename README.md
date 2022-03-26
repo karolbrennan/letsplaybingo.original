@@ -1,4 +1,4 @@
-# Bingo Caller
+# Let's Play Bingo - Classic Version
 This is a very simple bingo caller - it generates random bingo numbers, keeps track of them on a live bingo board.
 If voice synthesis is supported by the browser the balls will be called aloud using the web speech synthesis api.
 
