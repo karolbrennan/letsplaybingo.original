@@ -1,9 +1,11 @@
-# Let's Play Bingo - Original Version - 2016
-## This application has been retired
+# Let's Play Bingo - Original Version - 2016 (Archived)
+## This application has been archived
 This is a very simple bingo caller - it generates random bingo numbers, keeps track of them on a live bingo board.
 If voice synthesis is supported by the browser the balls will be called aloud using the web speech synthesis api.
 
 ## Live Site
+https://lpb-original.netlify.app/
+
 [Codepen](https://codepen.io/karolbrennan/pen/GxKZWX)
 
 ## Technology
